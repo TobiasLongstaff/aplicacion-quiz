@@ -51,9 +51,9 @@ nav h1
     display: flex;
     align-items: center;
     height: 40px;
-    color: var(--fondo);
+    color: var(--font2);
     border-radius: 5px;
-    border: none;
-    font-family: 'Nunito';
+    border: 2px solid var(--font2);
+    background-color: transparent;
     cursor: pointer;
 }

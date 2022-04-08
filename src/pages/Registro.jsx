@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { UilAt, UilKeySkeletonAlt, UilUser } from '@iconscout/react-unicons'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2/dist/sweetalert2.all.min.js'
-// import { url } from '../services/Settings'
-// import MensajeError from '../components/mensaje-error/MensajeError'
-// import useFetchGET from '../hooks/useFetchGET'
+import url from '../services/Settings'
+import MensajeError from '../components/mensaje-error/MensajeError'
 
 const Registro = () =>
 {
@@ -38,22 +37,19 @@ const Registro = () =>
             }
             Swal.fire('Creando Cuenta')
             Swal.showLoading()
-            let res = await fetch(url+'crear-cuenta.php', config)
+            let res = await fetch(url+'registro', config)
             let infoPost = await res.json()
-            console.log(infoPost[0])
-            if(infoPost[0].mensaje == 'Cuenta creada')
+            console.log(infoPost)
+            if(infoPost.id)
             {
                 Swal.fire(
                     'Cuenta creada exitosamente',
-                    'Te llegara un mail avisando cuando tu cuenta esta lista para usarse ',
+                    '',
                     'success'
                 )
                 setForm({         
                     nombre_apellido: '',
                     mail: '',
-                    telefono: '',
-                    sector: '',
-                    perfil_de_usuario: '',
                     password: '',
                     password_con: '' 
                 });
@@ -62,7 +58,7 @@ const Registro = () =>
             else
             {
                 Swal.close()
-                setError(infoPost[0].mensaje)
+                setError(infoPost.error)
             }
         }
         catch (error)
@@ -92,22 +88,22 @@ const Registro = () =>
                     </header>
                     <main className="container-textbox">
                         <div className="form-group">
-                            <input type="text" name="nombre_apellido" className="form-style" placeholder="Nombre Apellido" onChange={handelChange} required />
+                            <input type="text" value={form.nombre_apellido} name="nombre_apellido" className="form-style" placeholder="Nombre Apellido" onChange={handelChange} required />
                             <UilUser size="25" className="input-icon"/>
                         </div>
                         <div className="form-group">
-                            <input type="email" name="email" className="form-style" placeholder="E-Mail" onChange={handelChange} required />
+                            <input type="email" name="mail" value={form.mail} className="form-style" placeholder="E-Mail" onChange={handelChange} required />
                             <UilAt size="25" className="input-icon"/>
                         </div>
                         <div className="form-group">
-                            <input type="password" name="password" className="form-style" placeholder="Contraseña" onChange={handelChange} required />
+                            <input type="password" name="password" value={form.password} className="form-style" placeholder="Contraseña" onChange={handelChange} required />
                             <UilKeySkeletonAlt size="25" className="input-icon"/>
                         </div>
                         <div className="form-group">
-                            <input type="password" name="password_con" className="form-style" placeholder="Confirmar Contraseña" onChange={handelChange} required />
+                            <input type="password" name="password_con" value={form.password_con} className="form-style" placeholder="Confirmar Contraseña" onChange={handelChange} required />
                             <UilKeySkeletonAlt size="25" className="input-icon"/>
                         </div>
-                        {/* <MensajeError error={error}/> */}
+                        <MensajeError error={error}/>
                     </main>
                     <div className="container-btn">
                         <input type="submit" value="Crear Cuenta" className="btn-general"/>

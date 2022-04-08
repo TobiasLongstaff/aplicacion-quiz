@@ -1,0 +1,10 @@
+.mensaje-error
+{
+    background: var(--rojo);
+    border-radius: 5px;
+    color: var(--fondo1);
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0px 0px 10px 0px #78000079;
+}
