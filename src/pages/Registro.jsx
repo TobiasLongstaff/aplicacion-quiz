@@ -91,29 +91,21 @@ const Registro = () =>
                         <h2>Crear Cuenta</h2>
                     </header>
                     <main className="container-textbox">
-                        <div className="ico-textbox-grup">
-                            <div className="ico-textbox">
-                                <UilUser size="20"/>
-                            </div>
-                            <input type="text" placeholder="Nombre Apellido" name="nombre_apellido" className="textbox-general con-ico" onChange={handelChange} required/>
+                        <div className="form-group">
+                            <input type="text" name="nombre_apellido" className="form-style" placeholder="Nombre Apellido" onChange={handelChange} required />
+                            <UilUser size="25" className="input-icon"/>
                         </div>
-                        <div className="ico-textbox-grup">
-                            <div className="ico-textbox">
-                                <UilAt size="20"/>
-                            </div>
-                            <input type="email" placeholder="E-Mail" name="mail" className="textbox-general con-ico" onChange={handelChange} required/>
+                        <div className="form-group">
+                            <input type="email" name="email" className="form-style" placeholder="E-Mail" onChange={handelChange} required />
+                            <UilAt size="25" className="input-icon"/>
                         </div>
-                        <div className="ico-textbox-grup">
-                            <div className="ico-textbox">
-                                <UilKeySkeletonAlt size="20"/>
-                            </div>
-                            <input type="password" placeholder="Contraseña" name="password" className="textbox-general con-ico" onChange={handelChange} required/>
+                        <div className="form-group">
+                            <input type="password" name="password" className="form-style" placeholder="Contraseña" onChange={handelChange} required />
+                            <UilKeySkeletonAlt size="25" className="input-icon"/>
                         </div>
-                        <div className="ico-textbox-grup">
-                            <div className="ico-textbox">
-                                <UilKeySkeletonAlt size="20"/>
-                            </div>
-                            <input type="password" placeholder="Confirmar Contraseña" name="password_con" className="textbox-general con-ico" onChange={handelChange} required/>
+                        <div className="form-group">
+                            <input type="password" name="password_con" className="form-style" placeholder="Confirmar Contraseña" onChange={handelChange} required />
+                            <UilKeySkeletonAlt size="25" className="input-icon"/>
                         </div>
                         {/* <MensajeError error={error}/> */}
                     </main>

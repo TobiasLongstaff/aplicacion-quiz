@@ -1,0 +1,27 @@
+.container-cards
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 
+    minmax(300px, 1fr));
+    gap: 20px;
+    padding: 4%;
+}
+
+.cards
+{
+    color: var(--font2);
+    border-radius: 6px;
+    background: var(--gradient);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.btn-nuevo-cuestionario
+{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: var(--font2);
+    cursor: pointer;
+}

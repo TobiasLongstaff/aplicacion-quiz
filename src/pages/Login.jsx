@@ -76,25 +76,21 @@ const Login = () =>
             <main className="container-login">
                 <form className="form-general" onSubmit={handelSubmit}>
                     <header className="container-titulo-form">
-                        <h2>Iniciar Sesion</h2>
+                        <h2>Iniciar sesión</h2>
                     </header>
                     <main className="container-textbox">
-                        <div className="ico-textbox-grup">
-                            <div className="ico-textbox">
-                                <UilAt size="20"/>
-                            </div>
-                            <input type="email" name="mail" placeholder="E-Mail" className="textbox-general con-ico" onChange={handelChange} required/>
-                        </div>
-                        <div className="ico-textbox-grup">
-                            <div className="ico-textbox">
-                                <UilKeySkeletonAlt size="20"/>
-                            </div>
-                            <input type="password" name="password" placeholder="Contraseña" className="textbox-general con-ico" onChange={handelChange} required/>
-                        </div>
+                        <div className="form-group">
+                            <input type="email" name="mail" className="form-style" placeholder="E-Mail" onChange={handelChange} required />
+                            <UilAt size="25" className="input-icon"/>
+                        </div>                   
+                        <div className="form-group">
+                            <input type="password" name="password" className="form-style" placeholder="Contraseña" onChange={handelChange} required />
+                            <UilKeySkeletonAlt size="25" className="input-icon"/>
+                        </div>	
                         {/* <MensajeError error={error} /> */}
                     </main>
                     <div className="container-btn">
-                        <input type="submit" value="Iniciar Sesion" className="btn-general"/>
+                        <input type="submit" value="Iniciar sesión" className="btn-general"/>
                         <Link to="/registro" className="link-general">
                             <button type="button" className="btn-general btn-secundario">Crear Cuenta</button>
                         </Link>
