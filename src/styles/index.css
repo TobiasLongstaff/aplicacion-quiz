@@ -172,6 +172,23 @@ body
     border: 2px solid var(--azul);
 }
 
+.btn-eliminar, .btn-editar
+{
+    border-radius: 5px;
+    width: 40px;
+    height: 35px;
+    border: 2px solid var(--rojo);
+    background-color: transparent;
+    color: var(--rojo);
+    cursor: pointer;
+}
+
+.btn-editar
+{
+    border: 2px solid var(--verde); 
+    color: var(--verde);
+}
+
 .form-style
 {
     box-sizing: border-box;

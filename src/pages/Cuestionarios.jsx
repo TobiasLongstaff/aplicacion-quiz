@@ -45,7 +45,7 @@ const Cuestionarios = () =>
                     return(
                         data.map((fila) =>
                         (
-                            <Link key={fila._id} to="/ver-cuestionario/">
+                            <Link key={fila.id} to={'/ver-cuestionario/'+fila.id}>
                                 <div className="cards">
                                     <h1>{fila.titulo}</h1>
                                     <p>{fila.descripcion}</p>

@@ -76,14 +76,43 @@ app.get('/api/cuestionarios', async (request, response) =>
     response.json(cuestionarios)
 })
 
+app.post('/api/usuario', async (request, response) => 
+{
+    const { id } = request.body
+    const usuario = await Usuario.findById(id).populate('cuestionarios',
+    {
+        usuario: 0,
+        id: 0
+    })
+    response.json(usuario)
+})
+
+app.get('/api/cuestionarios/:id', async (request, response, next) => 
+{
+    const { id } = request.params
+    const cuestionario = await Cuestionario.findById(id)
+    if(cuestionario)
+    {
+        return response.json(cuestionario)
+    }
+    else
+    {
+        return response.status(404).json(
+        {
+            error: 'No existe este cuestionario'
+        })
+    }
+})
+
 app.post('/api/cuestionarios', async (request, response, next) =>
 {
     const { body } = request
-    const { titulo, descripcion, usuarioId } = body
+    const { titulo, descripcion, usuarioId, preguntas } = body
 
     const usuario = await Usuario.findById(usuarioId)
+    const cuestionariosTitulo = await Cuestionario.findOne({ titulo })
 
-    if (!titulo || !descripcion || !usuarioId) 
+    if (!titulo || !descripcion || !usuarioId || !preguntas) 
     {
         return response.status(400).json(
         {
@@ -91,11 +120,19 @@ app.post('/api/cuestionarios', async (request, response, next) =>
         })
     }
 
+    if(cuestionariosTitulo)
+    {
+        return response.status(400).json(
+        {
+            error: 'Ya existe un cuestionario con ese titulo'
+        })   
+    }
+
     const newCuestionario = new Cuestionario({
         titulo: titulo,
         fecha_creacion: new Date(), 
         descripcion: descripcion,
-        // preguntas: cuestionario.preguntas,
+        preguntas: preguntas,
         usuario: usuario._id
     })
 
@@ -110,7 +147,43 @@ app.post('/api/cuestionarios', async (request, response, next) =>
     {
         next(error)
     }
+})
 
+app.delete('/api/cuestionarios/:id', async (request, response, next) => 
+{
+    const { id } = request.params
+    const res = await Cuestionario.findByIdAndDelete(id)
+    if(res != null)
+    {
+        return response.json({ mensaje: 'eliminado' })
+    }
+    else
+    {
+        return response.status(404).json(
+        {
+            error: 'No existe este cuestionario'
+        })
+    }
+})
+
+app.put('/api/cuestionarios/:id', (request, response, next) => 
+{
+    const { id } = request.params
+    const cuestionario = request.body
+
+    const newCuestionario = 
+    {
+        titulo: cuestionario.titulo,
+        fecha_creacion: new Date(),
+        descripcion: cuestionario.descripcion,
+        preguntas: cuestionario.preguntas,
+    }
+
+    Cuestionario.findByIdAndUpdate(id, newCuestionario, { new: true})
+    .then(resultado => 
+    {
+        response.json(resultado)
+    })
 })
 
 const PORT = 3001

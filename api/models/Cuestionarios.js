@@ -4,15 +4,19 @@ const cuestionarioSchema = new Schema({
     titulo: String,
     fecha_creacion: Date,
     descripcion: String,
-    // preguntas: 
-    // [{
-    //     pregunta: String, 
-    //     respuesta: String,
-    //     incorrecta: 
-    //     [
-    //         {  type: String }
-    //     ] 
-    // }]
+    preguntas: 
+    [{
+        pre_id: Number,
+        pregunta: String, 
+        correcta: String,
+        incorrectas: 
+        [
+            { 
+                res_in: Number,
+                incorrecta: String 
+            }
+        ]
+    }],
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
@@ -25,6 +29,7 @@ cuestionarioSchema.set('toJSON',
     {  
         returnedObject.id = returnedObject._id
         delete returnedObject.__v
+        delete returnedObject._id
     }
 })
 

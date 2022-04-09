@@ -53,18 +53,16 @@ const Navigation = ({titulo, volver, refresh, childClick}) =>
             text: "¿Estás seguro que queres cerrar sesión?",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#00C3E3',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#4255d4',
+            cancelButtonColor: '#de1c47',
             confirmButtonText: 'Cerrar Sesión'
         }).then((result) => 
         {
             if(result.isConfirmed) 
             {
-                cookies.remove('id_usuario')
                 cookies.remove('hashSession')
                 cookies.remove('nombre')
                 cookies.remove('mail')
-                cookies.remove('tipo')
                 navigate('/')
             }
         })
