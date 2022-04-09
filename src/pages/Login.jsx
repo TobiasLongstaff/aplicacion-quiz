@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { UilAt, UilKeySkeletonAlt } from '@iconscout/react-unicons'
 import { Link, useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
-// import MensajeError from '../components/mensaje-error/MensajeError'
+import MensajeError from '../components/mensaje-error/MensajeError'
+import url from '../services/Settings'
 
 const cookie = new Cookies
 
@@ -20,7 +21,7 @@ const Login = () =>
     {
         if(cookie.get('hashSession') != null)
         {
-            navigate('/menu/seguimiento-de-pedidos')
+            navigate('/cuestionarios')
         }
     },[])
 
@@ -39,21 +40,19 @@ const Login = () =>
                 },
                 body: JSON.stringify(form)
             }
-            let res = await fetch(url+'login.php', config)
+            let res = await fetch(url+'login', config)
             let infoPost = await res.json()
-            console.log(infoPost[0])
-            if(infoPost[0].id != null)
+            console.log(infoPost)
+            if(infoPost.nombre != null)
             {
-                cookie.set('id_usuario', infoPost[0].id, {path: '/'})
-                cookie.set('nombre', infoPost[0].nombre, {path: '/'})
+                cookie.set('nombre', infoPost.nombre, {path: '/'})
                 cookie.set('mail', form.mail, {path: '/'})
-                cookie.set('tipo', infoPost[0].tipo, {path: '/'})
-                cookie.set('hashSession', infoPost[0].hash, {path: '/'})
-                navigate('/menu/seguimiento-de-pedidos')
+                cookie.set('hashSession', infoPost.idHash, {path: '/'})
+                navigate('/cuestionarios')
             }
             else
             {
-                setError(infoPost[0].mensaje)
+                setError(infoPost.error)
             }
         }
         catch (error)
@@ -87,7 +86,7 @@ const Login = () =>
                             <input type="password" name="password" className="form-style" placeholder="Contraseña" onChange={handelChange} required />
                             <UilKeySkeletonAlt size="25" className="input-icon"/>
                         </div>	
-                        {/* <MensajeError error={error} /> */}
+                        <MensajeError error={error} />
                     </main>
                     <div className="container-btn">
                         <input type="submit" value="Iniciar sesión" className="btn-general"/>

@@ -1,8 +1,9 @@
 const { model, Schema } = require('mongoose')
 
-const usuarioSchema = new Schema({
-    nombre_apellido: String,
+const usuarioSchema = new Schema(
+{
     fecha_creacion: Date,
+    nombre_apellido: String,
     mail: String,
     passwordHash: String,
     cuestionarios: [{

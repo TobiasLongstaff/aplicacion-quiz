@@ -11,9 +11,6 @@ const Registro = () =>
     {
         nombre_apellido: '',
         mail: '',
-        telefono: '',
-        sector: '',
-        perfil_de_usuario: '',
         password: '',
         password_con: ''
     })

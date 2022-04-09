@@ -1,10 +1,17 @@
-.container-cards
+.container-cards, .container-mis-cards
 {
     display: grid;
     grid-template-columns: repeat(auto-fit, 
     minmax(300px, 1fr));
     gap: 20px;
     padding: 4%;
+}
+
+.container-mis-cards
+{
+    padding: 0;
+    overflow: auto;
+    max-height: calc(100vh - 70px);
 }
 
 .cards

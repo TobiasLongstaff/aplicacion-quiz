@@ -1,7 +1,6 @@
 import React,{ useEffect, useState } from 'react'
 import Navigation from '../components/Navegacion/Navegacion'
 import '../styles/cuestionarios.css'
-import { UilPlus } from '@iconscout/react-unicons'
 import { Link } from 'react-router-dom'
 import url from '../services/Settings'
 
@@ -56,11 +55,6 @@ const Cuestionarios = () =>
                         ))                                    
                     )
                 })()}
-                <div className="cards">
-                    <Link to="/crear-cuestionario">
-                        <button className="btn-nuevo-cuestionario"><UilPlus size="60"/></button>
-                    </Link> 
-                </div>
             </main>
         </article>
     )

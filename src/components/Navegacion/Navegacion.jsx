@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './navegacion.css'
 import { Link } from 'react-router-dom'
-import { UilSignout, UilUserCircle, UilAngleLeft, UilRedo } from '@iconscout/react-unicons'
+import { UilSignout, UilUserCircle, UilAngleLeft, UilRedo, UilApps } from '@iconscout/react-unicons'
 import Cookies from 'universal-cookie'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2/dist/sweetalert2.all.min.js'
@@ -40,7 +40,6 @@ const Navigation = ({titulo, volver, refresh, childClick}) =>
                     className="btn-nav-general"
                     onClick={()=>childClick()}>
                     <UilRedo size="32"/>
-                    
                 </motion.button>
             )
         }
@@ -92,12 +91,12 @@ const Navigation = ({titulo, volver, refresh, childClick}) =>
             </header>
             <main className="container-controles-nav">
                 <div>
-                    <Link to="/mi-cuenta">
+                    <Link to="/mis-cuestionarios">
                         <motion.button   
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             className="btn-nav-general">
-                            <UilUserCircle size="32"/>
+                            <UilApps size="32"/>
                         </motion.button>
                     </Link>
                     <motion.button
