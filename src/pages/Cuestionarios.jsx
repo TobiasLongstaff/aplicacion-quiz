@@ -3,16 +3,27 @@ import Navigation from '../components/Navegacion/Navegacion'
 import '../styles/cuestionarios.css'
 import { Link } from 'react-router-dom'
 import url from '../services/Settings'
+import { useNavigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
+
+const cookie = new Cookies
 
 const Cuestionarios = () =>
 {
-
     const [ data, setData ] = useState([])
     const [ loading, setLoading ] = useState(false)
+    let navigate = useNavigate()
 
     useEffect(() =>
     {
-        obtenerCuestionarios()
+        if(cookie.get('hashSession') != null)
+        {
+            obtenerCuestionarios()
+        }
+        else
+        {
+            navigate('/')
+        }
     },[])
 
     const obtenerCuestionarios = async () =>

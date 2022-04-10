@@ -20,7 +20,12 @@ const cuestionarioSchema = new Schema({
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
-    }
+    },
+    respuestas: 
+    [{
+        type: Schema.Types.ObjectId,
+        ref: 'Respuesta'
+    }]
 })
 
 cuestionarioSchema.set('toJSON', 

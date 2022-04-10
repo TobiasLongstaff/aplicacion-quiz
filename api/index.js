@@ -5,6 +5,7 @@ const logger = require('./loggerMiddleware')
 const app = express()
 const Usuario = require('./models/Usuarios')
 const Cuestionario = require('./models/Cuestionarios')
+const Respuesta = require('./models/Respuestas')
 const bcrypt = require('bcrypt')
 
 app.use(cors())
@@ -52,28 +53,32 @@ app.post('/api/login', async (request, response) =>
     const { body } = request
     const { mail, password } = body
     const usuario = await Usuario.findOne({ mail })
-    const comparacionPassword = await bcrypt.compare(password, usuario.passwordHash)
-    if(!usuario || !comparacionPassword)
+    if(usuario != null)
+    {
+        const comparacionPassword = await bcrypt.compare(password, usuario.passwordHash)
+        if(comparacionPassword != null)
+        {
+            return response.json(
+            {
+                idHash: usuario._id,
+                nombre: usuario.nombre_apellido
+            })
+        }
+        else
+        {
+            return response.json(
+            {
+                error: 'Usuario o contraseñas incorrectas'
+            })
+        }
+    }
+    else
     {
         return response.json(
         {
             error: 'Usuario o contraseñas incorrectas'
         })
     }
-    else
-    {
-        return response.json(
-        {
-            idHash: usuario._id,
-            nombre: usuario.nombre_apellido
-        })
-    }
-})
-
-app.get('/api/cuestionarios', async (request, response) => 
-{
-    const cuestionarios = await Cuestionario.find({})
-    response.json(cuestionarios)
 })
 
 app.post('/api/usuario', async (request, response) => 
@@ -87,7 +92,66 @@ app.post('/api/usuario', async (request, response) =>
     response.json(usuario)
 })
 
-app.get('/api/cuestionarios/:id', async (request, response, next) => 
+app.get('/api/respuesta/:id', async (request, response) => 
+{
+    const { id } = request.params
+    const respuesta = await Respuesta.findById(id)
+    if(respuesta)
+    {
+        return response.json(respuesta)
+    }
+    else
+    {
+        return response.status(404).json(
+        {
+            error: 'No existe este respuesta'
+        })
+    }
+})
+
+app.post('/api/respuesta', async (request, response, next) => 
+{
+    const { body } = request
+    const { cuestionarioId, usuarioId, respuestas } = body
+    const usuario = await Usuario.findById(usuarioId)
+    const cuestionario = await Cuestionario.findById(cuestionarioId)
+    if (!cuestionarioId || !usuarioId || !respuestas) 
+    {
+        return response.status(400).json(
+        {
+            error: 'Se necesitan mas datos del cuestionario'
+        })
+    }
+
+    const newRespuesta = new Respuesta({
+        fecha_creacion: new Date(), 
+        respuestas: respuestas,
+        usuario: usuario._id,
+        cuestionario: cuestionario._id,
+    })
+
+    try
+    {
+        const savedRespuesta = await newRespuesta.save()   
+        usuario.respuestas = usuario.respuestas.concat(savedRespuesta._id) 
+        await usuario.save()
+        cuestionario.respuestas = cuestionario.respuestas.concat(savedRespuesta._id) 
+        await cuestionario.save()
+        return response.json(savedRespuesta)
+    }
+    catch(error)
+    {
+        next(error)
+    }
+})
+
+app.get('/api/cuestionarios', async (request, response) => 
+{
+    const cuestionarios = await Cuestionario.find({})
+    response.json(cuestionarios)
+})
+
+app.get('/api/cuestionarios/:id', async (request, response) => 
 {
     const { id } = request.params
     const cuestionario = await Cuestionario.findById(id)
@@ -112,7 +176,7 @@ app.post('/api/cuestionarios', async (request, response, next) =>
     const usuario = await Usuario.findById(usuarioId)
     const cuestionariosTitulo = await Cuestionario.findOne({ titulo })
 
-    if (!titulo || !descripcion || !usuarioId || !preguntas) 
+    if (!titulo || !descripcion || !usuarioId || !preguntas)
     {
         return response.status(400).json(
         {
@@ -149,7 +213,7 @@ app.post('/api/cuestionarios', async (request, response, next) =>
     }
 })
 
-app.delete('/api/cuestionarios/:id', async (request, response, next) => 
+app.delete('/api/cuestionarios/:id', async (request, response) => 
 {
     const { id } = request.params
     const res = await Cuestionario.findByIdAndDelete(id)
@@ -166,7 +230,7 @@ app.delete('/api/cuestionarios/:id', async (request, response, next) =>
     }
 })
 
-app.put('/api/cuestionarios/:id', (request, response, next) => 
+app.put('/api/cuestionarios/:id', (request, response) => 
 {
     const { id } = request.params
     const cuestionario = request.body
@@ -179,7 +243,7 @@ app.put('/api/cuestionarios/:id', (request, response, next) =>
         preguntas: cuestionario.preguntas,
     }
 
-    Cuestionario.findByIdAndUpdate(id, newCuestionario, { new: true})
+    Cuestionario.findByIdAndUpdate(id, newCuestionario, { new: true })
     .then(resultado => 
     {
         response.json(resultado)

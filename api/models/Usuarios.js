@@ -9,6 +9,11 @@ const usuarioSchema = new Schema(
     cuestionarios: [{
         type: Schema.Types.ObjectId,
         ref: 'Cuestionario'
+    }],
+    respuestas: 
+    [{
+        type: Schema.Types.ObjectId,
+        ref: 'Respuesta'
     }]
 })
 

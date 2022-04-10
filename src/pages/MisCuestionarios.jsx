@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Navigation from '../components/Navegacion/Navegacion'
 import url from '../services/Settings'
+import { useNavigate } from 'react-router-dom'
 import { UilTextFields, UilAlignLeft, UilQuestionCircle, UilCheckCircle, UilTimesCircle, UilEditAlt, UilTrash } from '@iconscout/react-unicons'
 import Swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 import Cookies from 'universal-cookie'
 
-const cookies = new Cookies
+const cookie = new Cookies
 
 
 const MisCuestionarios = () =>
 {
+    let navigate = useNavigate()
     const [ data, setData ] = useState([])
     const [ loading, setLoading ] = useState(true)
-    const [ form, setForm ] = useState({ usuarioId: cookies.get('hashSession'), titulo: '', descripcion: '', preguntas: [] })
+    const [ form, setForm ] = useState({ usuarioId: cookie.get('hashSession'), titulo: '', descripcion: '', preguntas: [] })
     const [ editar, setEditar ] = useState(false)
     const [ cantPre, setCantPre ] = useState(
     [
@@ -27,37 +29,23 @@ const MisCuestionarios = () =>
             }]
         }
     ])
-    const [ btnForm, setBtnForm ] = useState('var(--principal)')
+    const [ btnForm, setBtnForm ] = useState('var(--azul)')
 
     useEffect(() =>
     {
-        console.log(cantPre)
-    },[cantPre])
-
-    useEffect(() =>
-    {
-        console.log(form)
-        if(form.preguntas.length !== 0 ) // solucionar que se repite al cargar los datos
+        if(cookie.get('hashSession') != null)
         {
-            if(editar === true)
-            {
-                EditarCuestionario()
-            }
-            else
-            {
-                crearCuestionario()
-            }
+            obtenerCuestionarios()
         }
-    },[form])
-
-    useEffect(() =>
-    {
-        obtenerCuestionarios()
+        else
+        {
+            navigate('/')
+        }
     },[])
 
     const obtenerCuestionarios = async () =>
     {
-        const idUsuario = { id: cookies.get('hashSession')}
+        const idUsuario = { id: cookie.get('hashSession')}
         try 
         {
             let config =
@@ -176,16 +164,21 @@ const MisCuestionarios = () =>
         }
         else
         {
-            setForm(
+            form.preguntas = cantPre
+            if(editar === true)
             {
-                ...form,
-                preguntas: cantPre
-            })
+                EditarCuestionario()
+            }
+            else
+            {
+                crearCuestionario()
+            }   
         }
     }
 
     const crearCuestionario = async () =>
     {
+        console.log(form)
         try 
         {
             let config =
@@ -209,7 +202,7 @@ const MisCuestionarios = () =>
                     'success'
                 )
                 setEditar(false)
-                setBtnForm('var(--principal)')
+                setBtnForm('var(--azul)')
                 setCantPre(
                 [
                     {
@@ -223,7 +216,7 @@ const MisCuestionarios = () =>
                         }]
                     }
                 ])
-                setForm({ usuarioId: cookies.get('hashSession'), titulo: '', descripcion: '', preguntas: [] })
+                setForm({ usuarioId: cookie.get('hashSession'), titulo: '', descripcion: '', preguntas: [] })
                 obtenerCuestionarios()             
             }
             else
@@ -266,7 +259,7 @@ const MisCuestionarios = () =>
                     'success'
                 )
                 setEditar(false)
-                setBtnForm('var(--principal)')
+                setBtnForm('var(--azul)')
                 setCantPre(
                 [
                     {
@@ -280,7 +273,7 @@ const MisCuestionarios = () =>
                         }]
                     }
                 ])
-                setForm({ usuarioId: cookies.get('hashSession'), titulo: '', descripcion: '', preguntas: [] })
+                setForm({ usuarioId: cookie.get('hashSession'), titulo: '', descripcion: '', preguntas: [] })
                 obtenerCuestionarios()        
             }
             else
@@ -389,77 +382,73 @@ const MisCuestionarios = () =>
         })
     }
 
-    return(
-        <article>
-            <Navigation titulo="Mis Cuestionarios" volver="/cuestionarios"/>
-            <main className="container-mis-cuestionarios">
-                <div className="container-mis-cards">
-                    {(() => {
-                        if(loading)
-                            return(
-                                <div className="loader">Loading...</div>
-                            )
-                        return(
-                            data.cuestionarios.map((fila) =>
-                            (
-                                <div className="cards">
-                                    <div className="container-btn">
-                                        <button type="button" className="btn-editar" onClick={()=> handelEditar(fila.id)}><UilEditAlt size="20"/></button>
-                                        <button type="button" className="btn-eliminar" onClick={()=> handelEliminar(fila.id)}><UilTrash size="20"/></button>
-                                    </div>
-                                    <h1>{fila.titulo}</h1>
-                                    <p>{fila.descripcion}</p>
-                                    <label>{fila.fecha_creacion}</label>
+    if(!loading)
+        return(
+            <article>
+                <Navigation titulo="Mis Cuestionarios" volver="/cuestionarios"/>
+                <main className="container-mis-cuestionarios">
+                    <div className="container-mis-cards">
+                        {data.cuestionarios.map((fila) =>
+                        (
+                            <div className="cards">
+                                <div className="container-btn">
+                                    <button type="button" className="btn-editar" onClick={()=> handelEditar(fila.id)}><UilEditAlt size="20"/></button>
+                                    <button type="button" className="btn-eliminar" onClick={()=> handelEliminar(fila.id)}><UilTrash size="20"/></button>
                                 </div>
-                            ))                                    
-                        )
-                    })()}
-                </div>
-                <div className="container-crear-cuestionario">
-                    <form className="form-general" onSubmit={handelSubmit}>
-                        <h1>Cuestionario</h1>
-                        <main className="container-textbox">
-                            <div className="form-group">
-                                <input type="text" value={form.titulo} name="titulo" className="form-style" placeholder="Titulo del cuestionario" onChange={handelChange} required />
-                                <UilTextFields size="25" className="input-icon"/>
+                                <h1>{fila.titulo}</h1>
+                                <p>{fila.descripcion}</p>
+                                <label>{fila.fecha_creacion}</label>
                             </div>
-                            <div className="form-group">
-                                <input type="text" value={form.descripcion} name="descripcion" className="form-style" placeholder="Descripcion" onChange={handelChange} required />
-                                <UilAlignLeft  size="25" className="input-icon"/>
-                            </div>
-                            {cantPre.map((filaPre) =>
-                            (
-                                <div className="container-pregunta">
-                                    <label>Pregunta {filaPre.pre_id}</label>
-                                    <div className="container-info-pregunta">
-                                        <div className="form-group">
-                                            <input type="text" value={filaPre.pregunta} name={'pregunta-'+filaPre.pre_id} className="form-style" placeholder="Pregunta" onChange={handelChangePregunta} required />
-                                            <UilQuestionCircle size="25" className="input-icon"/>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="text" value={filaPre.correcta} name={'correcta-'+filaPre.pre_id} className="form-style" placeholder="Respuesta correcta" onChange={handelChangePregunta} required />
-                                            <UilCheckCircle size="25" className="input-icon"/>
-                                        </div>
-                                        {filaPre.incorrectas.map((fila) =>
-                                        (
+                        ))}                                   
+                    </div>
+                    <div className="container-crear-cuestionario">
+                        <form className="form-general" onSubmit={handelSubmit}>
+                            <h1>Cuestionario</h1>
+                            <main className="container-textbox">
+                                <div className="form-group">
+                                    <input type="text" value={form.titulo} name="titulo" className="form-style" placeholder="Titulo del cuestionario" onChange={handelChange} required />
+                                    <UilTextFields size="25" className="input-icon"/>
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" value={form.descripcion} name="descripcion" className="form-style" placeholder="Descripcion" onChange={handelChange} required />
+                                    <UilAlignLeft  size="25" className="input-icon"/>
+                                </div>
+                                {cantPre.map((filaPre) =>
+                                (
+                                    <div className="container-pregunta">
+                                        <label>Pregunta {filaPre.pre_id}</label>
+                                        <div className="container-info-pregunta">
                                             <div className="form-group">
-                                                <input type="text" value={fila.incorrecta} name={filaPre.pre_id+'-'+fila.res_in} className="form-style" placeholder={'Restuesta incorrecta '+fila.res_in} onChange={handelChangeIncorrecta} />
-                                                <UilTimesCircle size="25" className="input-icon"/>
+                                                <input type="text" value={filaPre.pregunta} name={'pregunta-'+filaPre.pre_id} className="form-style" placeholder="Pregunta" onChange={handelChangePregunta} required />
+                                                <UilQuestionCircle size="25" className="input-icon"/>
                                             </div>
-                                        ))} 
-                                        <button type="button" onClick={()=>agregarRespuestaIncorrecta(filaPre.pre_id)} className="btn-general btn-secundario">Agregar Respuesta Incorrecta</button>
+                                            <div className="form-group">
+                                                <input type="text" value={filaPre.correcta} name={'correcta-'+filaPre.pre_id} className="form-style" placeholder="Respuesta correcta" onChange={handelChangePregunta} required />
+                                                <UilCheckCircle size="25" className="input-icon"/>
+                                            </div>
+                                            {filaPre.incorrectas.map((fila) =>
+                                            (
+                                                <div className="form-group">
+                                                    <input type="text" value={fila.incorrecta} name={filaPre.pre_id+'-'+fila.res_in} className="form-style" placeholder={'Restuesta incorrecta '+fila.res_in} onChange={handelChangeIncorrecta} />
+                                                    <UilTimesCircle size="25" className="input-icon"/>
+                                                </div>
+                                            ))} 
+                                            <button type="button" onClick={()=>agregarRespuestaIncorrecta(filaPre.pre_id)} className="btn-general btn-secundario">Agregar Respuesta Incorrecta</button>
+                                        </div>
                                     </div>
+                                ))}
+                                <div className="container-btn">
+                                    <button type="button" className="btn-general btn-secundario" onClick={()=>agregarPregunta()}>Agregar Nueva Pregunta</button>
+                                    <button type="submit" style={{ background: btnForm}} className="btn-general">Publicar Cuestionario</button>
                                 </div>
-                            ))}
-                            <div className="container-btn">
-                                <button type="button" className="btn-general btn-secundario" onClick={()=>agregarPregunta()}>Agregar Nueva Pregunta</button>
-                                <button type="submit" style={{ background: btnForm}} className="btn-general">Publicar Cuestionario</button>
-                            </div>
-                        </main>
-                    </form>
-                </div>
-            </main>
-        </article>
+                            </main>
+                        </form>
+                    </div>
+                </main>
+            </article>
+        )
+    return(
+        <div className="loader">Loading...</div>
     )
 }
 
