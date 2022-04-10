@@ -28,11 +28,6 @@ const VerRespuestas = () =>
         }
     },[])
 
-    useEffect(() =>
-    {
-        console.log(dataRes)
-    },[dataRes])
-
     const obtenerInfoCuestionario = async (id) =>
     {
         try

@@ -178,7 +178,6 @@ const MisCuestionarios = () =>
 
     const crearCuestionario = async () =>
     {
-        console.log(form)
         try 
         {
             let config =
@@ -193,7 +192,6 @@ const MisCuestionarios = () =>
             }
             let res = await fetch(url+'cuestionarios', config)
             let infoPost = await res.json()
-            console.log(infoPost)
             if(infoPost.id != null)
             {
                 Swal.fire(
@@ -250,7 +248,6 @@ const MisCuestionarios = () =>
             }
             let res = await fetch(url+'cuestionarios/'+form.id, config)
             let infoPost = await res.json()
-            console.log(infoPost)
             if(infoPost.id != null)
             {
                 Swal.fire(
@@ -326,7 +323,6 @@ const MisCuestionarios = () =>
             }
             let res = await fetch(url+'cuestionarios/'+id, config)
             let infoPost = await res.json()
-            console.log(infoPost)
             if(infoPost.mensaje == 'eliminado')
             {
                 Swal.fire(

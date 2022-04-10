@@ -41,6 +41,7 @@ const CuestionariosContestados = () =>
             console.error(error)
         }
     }
+    
     if(!loading)
         return(
             <article>

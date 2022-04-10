@@ -36,7 +36,6 @@ const Registro = () =>
             Swal.showLoading()
             let res = await fetch(url+'registro', config)
             let infoPost = await res.json()
-            console.log(infoPost)
             if(infoPost.id)
             {
                 Swal.fire(
@@ -73,7 +72,6 @@ const Registro = () =>
             ...form,
             [e.target.name]: e.target.value
         })
-        console.log(form)
     }
 
     return(

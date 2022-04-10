@@ -69,7 +69,6 @@ const VerCuestionario = () =>
             }
             let res = await fetch(url+'respuesta', config)
             let infoPost = await res.json()
-            console.log(infoPost)
             if(infoPost.id != null)
             {
                 navigate('/cuestionarios')
@@ -111,9 +110,6 @@ const VerCuestionario = () =>
         {
             form.respuestas[elementIndex].correcta = false
         }
-
-        console.log(form)
-
     }
 
     if(!loading)

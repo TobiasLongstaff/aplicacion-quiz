@@ -2,7 +2,7 @@
 >para correr la aplicacion colocamos 
 * npm run dev
 >para correr la API colocamos 
-* npm run start
+* npm start
 >CARPETAS
 * api: con la API que ya contiene la configuración de conexión con la base de datoss
 * node_modules: con las dependencias npm del proyecto

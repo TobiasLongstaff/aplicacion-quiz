@@ -42,7 +42,6 @@ const Login = () =>
             }
             let res = await fetch(url+'login', config)
             let infoPost = await res.json()
-            console.log(infoPost)
             if(infoPost.nombre != null)
             {
                 cookie.set('nombre', infoPost.nombre, {path: '/'})
