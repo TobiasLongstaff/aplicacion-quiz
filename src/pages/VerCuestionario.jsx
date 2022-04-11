@@ -43,7 +43,7 @@ const VerCuestionario = () =>
             {
                 setData(data)
                 setLoading(false)
-                data.preguntas.map( fila => form.respuestas.push({ res_id: fila.pre_id, correcta: false, respuesta: ''}))
+                data.preguntas.map( fila => form.respuestas.push({ res_id: fila.pre_id, correcta: 'Incorrecta', respuesta: ''}))
             }
         }
         catch(error)
@@ -104,11 +104,11 @@ const VerCuestionario = () =>
 
         if(RespuestaCorrecta == e.target.value)
         {
-            form.respuestas[elementIndex].correcta = true
+            form.respuestas[elementIndex].correcta = 'Correcta'
         }
         else
         {
-            form.respuestas[elementIndex].correcta = false
+            form.respuestas[elementIndex].correcta = 'Incorrecta'
         }
     }
 

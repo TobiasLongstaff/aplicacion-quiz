@@ -3,6 +3,7 @@ import { Link, useNavigate  } from 'react-router-dom'
 import Navigation from '../components/Navegacion/Navegacion'
 import url from '../services/Settings'
 import Cookies from 'universal-cookie'
+import { motion } from 'framer-motion'
 
 const cookie = new Cookies
 
@@ -47,18 +48,23 @@ const CuestionariosContestados = () =>
             <article>
                 <Navigation titulo="Cuestionarios Contestados" volver="/cuestionarios"/>
                 <main className="container-cards">
-                    {data.filter(fila => 
+                    {data.length == 0 ?
+                        <label>No has contestado ningún cuestionario</label> : (
+                    data.filter(fila => 
                     fila.respuestas.length != 0
                     ).map((fila) =>
                     (
                         <Link key={fila.id} to={'/ver-respuestas/'+fila.id+'/'+fila.respuestas}>
-                            <div className="cards">
+                            <motion.div
+                                whileHover={{ scale: 1.01 }}
+                                whileTap={{ scale: 0.99 }} 
+                                className="cards">
                                 <h1>{fila.titulo}</h1>
                                 <p>{fila.descripcion}</p>
                                 <label>{fila.fecha_creacion}</label>
-                            </div>
+                            </motion.div>
                         </Link>
-                    ))}                                   
+                    )))}                                   
                 </main>
             </article>
         )

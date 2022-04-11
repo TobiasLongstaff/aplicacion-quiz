@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { UilTextFields, UilAlignLeft, UilQuestionCircle, UilCheckCircle, UilTimesCircle, UilEditAlt, UilTrash } from '@iconscout/react-unicons'
 import Swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 import Cookies from 'universal-cookie'
+import { motion } from 'framer-motion'
 
 const cookie = new Cookies
 
@@ -388,8 +389,18 @@ const MisCuestionarios = () =>
                         (
                             <div className="cards">
                                 <div className="container-btn">
-                                    <button type="button" className="btn-editar" onClick={()=> handelEditar(fila.id)}><UilEditAlt size="20"/></button>
-                                    <button type="button" className="btn-eliminar" onClick={()=> handelEliminar(fila.id)}><UilTrash size="20"/></button>
+                                    <motion.button
+                                        whileHover={{ backgroundColor: '#15a95b', color: '#e7e8ea'}}
+                                        whileTap={{ scale: 0.9 }} 
+                                        type="button" className="btn-editar" onClick={()=> handelEditar(fila.id)}>
+                                            <UilEditAlt size="20"/>
+                                    </motion.button>
+                                    <motion.button
+                                        whileHover={{ backgroundColor: '#de1c47', color: '#e7e8ea'}}
+                                        whileTap={{ scale: 0.9 }} 
+                                        type="button" className="btn-eliminar" onClick={()=> handelEliminar(fila.id)}>
+                                            <UilTrash size="20"/>
+                                    </motion.button>
                                 </div>
                                 <h1>{fila.titulo}</h1>
                                 <p>{fila.descripcion}</p>

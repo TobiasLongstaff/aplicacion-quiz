@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import url from '../services/Settings'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
+import { motion } from 'framer-motion'
 
 const cookie = new Cookies
 
@@ -53,15 +54,22 @@ const Cuestionarios = () =>
                         return(
                             <div className="loader">Loading...</div>
                         )
+                    else if(data.length == 0)
+                        return(
+                            <label>No se ha creado ningún cuestionario</label>
+                        )
                     return(
                         data.map((fila) =>
                         (
                             <Link key={fila.id} to={'/ver-cuestionario/'+fila.id}>
-                                <div className="cards">
+                                <motion.div
+                                    whileHover={{ scale: 1.01 }}
+                                    whileTap={{ scale: 0.99 }} 
+                                    className="cards">
                                     <h1>{fila.titulo}</h1>
                                     <p>{fila.descripcion}</p>
                                     <label>{fila.fecha_creacion}</label>
-                                </div>
+                                </motion.div>
                             </Link>
                         ))                                    
                     )

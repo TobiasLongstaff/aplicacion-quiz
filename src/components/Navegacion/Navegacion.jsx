@@ -22,7 +22,7 @@ const Navigation = ({titulo, volver, refresh, childClick}) =>
             setVolver(
                 <Link to={volver}>
                     <motion.button
-                        whileHover={{ backgroundColor: '#88a4ff' }}
+                        whileHover={{ backgroundColor: '#e7e8ea', color: '#0e0e23'}}
                         whileTap={{ scale: 0.9 }}
                         className="btn-nav-general-volver">
                         <UilAngleLeft size="32"/>

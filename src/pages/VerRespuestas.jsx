@@ -79,39 +79,31 @@ const VerRespuestas = () =>
                                     <label>{'Pregunta '+pregunta.pre_id}</label>
                                     <label>{pregunta.pregunta}</label>
                                     <label>{pregunta.descripcion}</label>
-                                    <div className="form-group">
-                                        <select className="form-style" size={pregunta.incorrectas.length+1}>
-                                            <option className="op-respuesta-correcta">{pregunta.correcta}</option>
-                                            {pregunta.incorrectas.map((incorrecta) =>
-                                            (
-                                                <option key={incorrecta.res_in} value={incorrecta.incorrecta}>{incorrecta.incorrecta}</option>
-                                            ))}
-                                        </select>
-                                        {(() => {
-                                            if(loadingRes)
-                                            {
-                                                return(
-                                                    <div className="loader">Loading...</div>
-                                                )
-                                            }
-                                            else
-                                            {
-                                                console.log(dataRes.respuestas[pregunta.pre_id - 1].correcta)
-                                                if(dataRes.respuestas[pregunta.pre_id - 1].correcta == true)
-                                                {
-                                                    return(
-                                                        <label>Respuesta Correcta</label>
-                                                    )
-                                                }
-                                                else
-                                                {
-                                                    return(
-                                                        <label>Respuesta Incorrecta</label> 
-                                                    )
-                                                }
-                                            }
-                                        })()}
-                                    </div>
+                                    {(() => {
+                                        if(loadingRes)
+                                        {
+                                            return(
+                                                <div className="loader">Loading...</div>
+                                            )
+                                        }
+                                        else
+                                        {
+                                            return(
+                                                <>
+                                                    <label>Respuesta { dataRes.respuestas[pregunta.pre_id - 1].correcta}</label>
+                                                    <div className="form-group">
+                                                        <select className="form-style" value={dataRes.respuestas[pregunta.pre_id - 1].respuesta} size={pregunta.incorrectas.length+1}>
+                                                            <option className="op-respuesta-correcta">{pregunta.correcta}</option>
+                                                            {pregunta.incorrectas.map((incorrecta) =>
+                                                            (
+                                                                <option key={incorrecta.res_in} value={incorrecta.incorrecta}>{incorrecta.incorrecta}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+                                    })()}
                                 </div>
                             ))}
                         </main>
