@@ -250,6 +250,12 @@ app.put('/api/cuestionarios/:id', (request, response) =>
     })
 })
 
+app.use((error, request, response, next) => 
+{
+    console.log(error)
+    response.status(500).end()
+})
+
 const PORT = 3001
 app.listen(PORT, () =>
 {
